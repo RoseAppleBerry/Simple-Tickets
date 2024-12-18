@@ -1,14 +1,15 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend server for the event booking application",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon index.js"
+    "start": "node index.js", // Production start script for Vercel
+    "server": "nodemon index.js", // Development script
+    "vercel-build": "echo 'Backend Ready!'" // Vercel compatibility placeholder
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [ "backend", "express", "api" ],
+  "author": "ASE Project",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.5.0",
@@ -19,5 +20,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.0",
     "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
