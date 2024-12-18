@@ -1,34 +1,108 @@
-import React, { useState, useEffect } from "react";
-import "./UserProfileModel.css";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './UserProfileModel.css';
 
-function UserProfileModel({ onClose, onEdit }) {
-  const [user, setUser] = useState(null);
+const UserProfileModel = () => {
+    const [userData, setUserData] = useState({
+        name: '',
+        email: '',
+        role: '',
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
-  useEffect(() => {
-    const storedEmail = localStorage.getItem("email");
-    const storedName = localStorage.getItem("username");
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('You need to log in first!');
+                window.location.href = '/login';
+                return;
+            }
+            try {
+                const res = await axios.get('http://localhost:5000/user/profile', {
+                    headers: { Authorization: token },
+                });
+                setUserData(res.data);
+            } catch (err) {
+                console.error(err.message);
+                setError('Failed to load profile information.');
+            }
+        };
 
-    if (storedEmail && storedName) {
-      setUser({ email: storedEmail, name: storedName });
-    }
-  }, []);
+        fetchUserData();
+    }, []);
 
-  return (
-    <div className="modal-overlay">
-      <div className="user-profile-modal">
-        <h2>User Profile</h2>
-        {user ? (
-          <>
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
-          </>
-        ) : (
-          <p>Loading user profile...</p>
-        )}
-        <button onClick={onClose}>Close</button>
-      </div>
-    </div>
-  );
-}
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setUserData({ ...userData, [name]: value });
+    };
+
+    const handleUpdateProfile = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+        setLoading(true);
+        setError('');
+        setSuccess('');
+
+        try {
+            await axios.put(
+                'http://localhost:5000/user/profile',
+                { name: userData.name, email: userData.email },
+                { headers: { Authorization: token } }
+            );
+            setSuccess('Profile updated successfully!');
+        } catch (err) {
+            console.error(err.message);
+            setError('Failed to update profile.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="profile-container">
+            <h2>User Profile</h2>
+            {error && <p className="error-message">{error}</p>}
+            {success && <p className="success-message">{success}</p>}
+
+            <form onSubmit={handleUpdateProfile}>
+                <div className="form-group">
+                    <label>Name:</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={userData.name}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={userData.email}
+                        onChange={handleInputChange}
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <label>Role:</label>
+                    <input
+                        type="text"
+                        name="role"
+                        value={userData.role}
+                        readOnly
+                    />
+                </div>
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Updating...' : 'Update Profile'}
+                </button>
+            </form>
+        </div>
+    );
+};
 
 export default UserProfileModel;
