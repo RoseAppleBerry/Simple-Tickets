@@ -8,7 +8,12 @@
     "server": "nodemon index.js",
     "vercel-build": "echo 'Backend Ready!'"
   },
-  "keywords": [ "backend", "express", "api", "event-booking" ],
+  "keywords": [
+    "backend",
+    "express",
+    "api",
+    "event-booking"
+  ],
   "author": "ASE Project",
   "license": "ISC",
   "dependencies": {
@@ -20,6 +25,7 @@
     "mongoose": "^7.5.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "nodemon": "^3.0.1"
   },
   "engines": {
