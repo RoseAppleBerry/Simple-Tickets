@@ -4,21 +4,22 @@
   "description": "Backend server for the event booking application",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js", // Production start script for Vercel
-    "server": "nodemon index.js", // Development script
-    "vercel-build": "echo 'Backend Ready!'" // Vercel compatibility placeholder
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "vercel-build": "echo 'Backend Ready!'"
   },
-  "keywords": [ "backend", "express", "api" ],
+  "keywords": [ "backend", "express", "api", "event-booking" ],
   "author": "ASE Project",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.5.0",
+    "mongoose": "^7.5.0"
+  },
+  "devDependencies": {
     "nodemon": "^3.0.1"
   },
   "engines": {
