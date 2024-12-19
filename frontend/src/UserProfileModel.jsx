@@ -21,7 +21,7 @@ const UserProfileModel = () => {
                 return;
             }
             try {
-                const res = await axios.get('http://localhost:5000/user/profile', {
+                const res = await axios.get('/api/user/profile', {
                     headers: { Authorization: token },
                 });
                 setUserData(res.data);
@@ -48,7 +48,7 @@ const UserProfileModel = () => {
 
         try {
             await axios.put(
-                'http://localhost:5000/user/profile',
+                '/api/user/profile',
                 { name: userData.name, email: userData.email },
                 { headers: { Authorization: token } }
             );
